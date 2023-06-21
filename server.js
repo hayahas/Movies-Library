@@ -19,15 +19,15 @@ app.get('*',handleNotFound500)
 app.get('*',handleNotFound404)
 
 
-function handleJson(){
+function handleJson(req,res){
 res.send(data)
 }
 
-function handleFavorite(){
+function handleFavorite(req,res){
     res.send("Welcome to Favorite Page")
 }
 
-function handleNotFound500(){
+function handleNotFound500(req,res){
     res.send({
 "status": 500,
 "responseText": "Sorry, something went wrong"
@@ -35,7 +35,7 @@ function handleNotFound500(){
 }
 
 
-function handleNotFound404(){
+function handleNotFound404(req,res){
     res.send({
 "code": 404,
 "responseText": "page not found"
