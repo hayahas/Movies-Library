@@ -2,15 +2,43 @@
 const express = require('express');
 const cors =require('cors');
 const app= express();
+const axios =require('axios');
+
+require("dotenv").config();
 
 const data = require('./MovieData/data.json')
 
-function Movie(title, poster_path, overview) {
+function Movie(id,title, poster_path, release_date,overview) {
+    this.id = id;
     this.title = title;
     this.poster_path = poster_path;
+    this.release_date = release_date;
     this.overview = overview;
   }
 
+  app.get('/trending', async (req,res,next) => {
+    let axiosResponse= await axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.moviesKey}&language=en-US`)
+    //res.send(axiosResponse.data.results)
+    let x=axiosResponse.data.results;
+    let movies=[];
+   
+    for(let i=0;i<x.length;i++){
+     let movie = x[i];
+     let movieObject = new Movie (movie.id,movie.title, movie.release_date ,movie.poster_path,movie.overview)
+     movies.push(movieObject)
+    }
+     res.send(movies)
+
+  })
+
+   // localhost:3000/search?search=movieName
+  app.get('/search', async(req,res,next) => {
+    let movieName= req.query.search;
+    let axiosResponse= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.moviesKey}&language=en-US&query=${movieName}`)
+    
+    let search=axiosResponse.data;
+    res.send(search)
+  })
   
   
 app.use(cors())
@@ -25,11 +53,7 @@ function handleJson(req,res){
 
 let movies=[];
 
-  for(let i=0;i<data.length;i++){
-    let movie = data[i];
-    let movieObject = new Movie (movie.title, movie.poster_path,movie.overview)
-    movies.push(movieObject)
-  }
+ 
   console.log(data)
   res.send(data)
 }
