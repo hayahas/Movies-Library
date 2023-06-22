@@ -3,24 +3,35 @@ const express = require('express');
 const cors =require('cors');
 const app= express();
 
-const data = require('./Movie Data./data.json')
+const data = require('./MovieData/data.json')
 
 function Movie(title, poster_path, overview) {
     this.title = title;
     this.poster_path = poster_path;
     this.overview = overview;
   }
+
+  
   
 app.use(cors())
 
-app.get('/.',handleJson)
+app.get('/',handleJson)
 app.get('/favorite',handleFavorite)
-app.get('*',handleNotFound500)
+app.get('/error',handleNotFound500)
 app.get('*',handleNotFound404)
 
 
 function handleJson(req,res){
-res.send(data)
+
+let movies=[];
+
+  for(let i=0;i<data.length;i++){
+    let movie = data[i];
+    let movieObject = new Movie (movie.title, movie.poster_path,movie.overview)
+    movies.push(movieObject)
+  }
+  console.log(data)
+  res.send(data)
 }
 
 function handleFavorite(req,res){
