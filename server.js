@@ -25,13 +25,13 @@ function handleJson(req,res){
 
 let movies=[];
 
-  for(let i=0;i<data.length;i++){
-    let movie = data[i];
-    let movieObject = new Movie (movie.title, movie.poster_path,movie.overview)
+  // for(let i=0;i<=data.length;i++){
+  //   let movie = data[i];
+    let movieObject = new Movie (data.title, data.poster_path,data.overview)
     movies.push(movieObject)
-  }
-  console.log(data)
-  res.send(data)
+  // }
+  // console.log(data)
+  res.send(movies)
 }
 
 function handleFavorite(req,res){
