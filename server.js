@@ -53,9 +53,10 @@ function handleJson(req,res){
 
 let movies=[];
 
- 
-  console.log(data)
-  res.send(data)
+    let movieObject = new Movie (data.title, data.poster_path,data.overview)
+    movies.push(movieObject)
+  res.send(movies)
+
 }
 
 function handleFavorite(req,res){
