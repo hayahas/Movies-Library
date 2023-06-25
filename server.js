@@ -15,9 +15,11 @@ function Movie(id,title, poster_path, release_date,overview) {
     this.release_date = release_date;
     this.overview = overview;
   }
+  console.log(process.env.HAYAKEY)
 
+   // localhost:3000/trending
   app.get('/trending', async (req,res,next) => {
-    let axiosResponse= await axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.moviesKey}&language=en-US`)
+    let axiosResponse= await axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.HAYAKEY}&language=en-US`)
     //res.send(axiosResponse.data.results)
     let x=axiosResponse.data.results;
     let movies=[];
@@ -34,13 +36,39 @@ function Movie(id,title, poster_path, release_date,overview) {
    // localhost:3000/search?search=movieName
   app.get('/search', async(req,res,next) => {
     let movieName= req.query.search;
-    let axiosResponse= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.moviesKey}&language=en-US&query=${movieName}`)
+    let axiosResponse= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.HAYAKEY}&language=en-US&query=${movieName}`)
     
     let search=axiosResponse.data;
     res.send(search)
   })
   
+    // localhost:3000/search?search=PosterPath
+    app.get('/searchPoster', async(req,res,next) => {
+      let moviePoster= req.query.search;
+      let axiosResponse= await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.HAYAKEY}&language=en-US&query=${moviePoster}`)
+      
+      let search=axiosResponse.data;
+      res.send(search)
+    })
+
+ 
+   // localhost:3000/allMovies
+    app.get('/allMovies', async (req,res,next) => {
+      let axiosResponse= await axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.HAYAKEY}&language=en-US`)
+      //res.send(axiosResponse.data.results)
+      let x=axiosResponse.data.results;
+      let movies=[];
+     
+      for(let i=0;i<x.length;i++){
+       let movie = x[i];
+       let movieObject = new Movie (movie.title)
+       movies.push(movieObject)
+      }
+       res.send(movies)
   
+    })
+
+
 app.use(cors())
 
 app.get('/',handleJson)
