@@ -3,10 +3,19 @@ const express = require('express');
 const cors =require('cors');
 const app= express();
 const axios =require('axios');
-
+const PORT = process.env.PORT;
+const pg =require('pg');
 require("dotenv").config();
 
 const data = require('./MovieData/data.json')
+
+const DB_URL=process.env.DB_URL
+
+const dbClient= new pg.Client(DB_URL)
+
+app.use(cors())
+app.use(express.json())
+
 
 function Movie(id,title, poster_path, release_date,overview) {
     this.id = id;
@@ -15,7 +24,6 @@ function Movie(id,title, poster_path, release_date,overview) {
     this.release_date = release_date;
     this.overview = overview;
   }
-  console.log(process.env.HAYAKEY)
 
    // localhost:3000/trending
   app.get('/trending', async (req,res,next) => {
@@ -69,7 +77,7 @@ function Movie(id,title, poster_path, release_date,overview) {
     })
 
 
-app.use(cors())
+
 
 app.get('/',handleJson)
 app.get('/favorite',handleFavorite)
@@ -107,8 +115,38 @@ function handleNotFound404(req,res){
 }
 
 
-app.listen(3000,startingLog)
+///////lab 13
 
-function startingLog(req,res){
-console.log("Running at 3000")
-}
+   // localhost:3000/addMovie
+   app.post('/addMovie',(req,res)=> {
+
+    let {t,y,m}=req.body;
+  
+  let sql=`insert into movies (title,year,mainActor) values ($1,$2,$3)`;
+  dbClient.query(sql,[t,y,m]).then(()=>{
+    res.status(200).send(`movie ${title} added to database`)
+  });
+  
+  });
+  
+  //localhost:3000/getMovies
+  app.get('/getMovies',(req,res)=> {
+    let sql=`SELECT * FROM movies`;
+    dbClient.query(sql).then((moviesData) => {
+      res.status(201).send(moviesData.rows)
+    })
+  
+  })
+  
+
+
+dbClient.connect().then(() => {
+  app.listen(PORT,() => {
+    console.log("Running at 3000")
+  });
+}); 
+
+
+
+
+

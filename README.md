@@ -5,9 +5,13 @@
 
 **Author Name**: Haya Hassan
 
+DataBase Name : moviesdb , table name: movies
+you can add a movie from the body and, get all the data in the table using the specific route
+
 ## WRRC
 Add an image of your WRRC here
-![Alt text](wrrc.jpg)
+
+![Alt text](wrrc13.png)
 
 ## Overview
 Movies data and tickets for reservation and information about movies.
