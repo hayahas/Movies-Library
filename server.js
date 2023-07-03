@@ -79,10 +79,10 @@ function Movie(id,title, poster_path, release_date,overview) {
 
 
 
-app.get('/',handleJson)
+app.use('/',handleJson)
 app.get('/favorite',handleFavorite)
 app.get('/error',handleNotFound500)
-app.get('*',handleNotFound404)
+app.use('*',handleNotFound404)
 
 
 function handleJson(req,res){
