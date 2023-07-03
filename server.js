@@ -98,20 +98,6 @@ function handleFavorite(req,res){
     res.send("Welcome to Favorite Page")
 }
 
-function handleNotFound500(req,res){
-    res.send({
-"status": 500,
-"responseText": "Sorry, something went wrong"
-    })
-}
-
-
-function handleNotFound404(req,res){
-    res.send({
-"code": 404,
-"responseText": "page not found"
-    })
-}
 
 
 ///////lab 13
@@ -136,14 +122,83 @@ function handleNotFound404(req,res){
     })
   
   })
+
+  //////lab 14
+
+   //localhost:3000/delete/id
+  app.delete('/delete/:id', (req,res) => {
+  let {id}= req.params;
+  let sql=`DELETE FRROM movies where id = ${id}`;
+  dbClient.query(sql).then(() => {
+  res.status(200).end()
+})
+
+  })
+
+    
+  // delet in async/await way
+  // app.delete('/delete/:id', async (req,res) => {
+  //   let {id}= req.params;
+  //   let sql=`DELETE FRROM movies where id = ${id}`;
+  //    await dbClient.query(sql)
+  //     res.status(200).send("deleted")  
+  //     })
+
+
+ //localhost:update/delete/id
+  app.put('/update/:id' , async(req,res) =>{
+    let {newMainActor} = req.body;
+    let {id}= req.params;
+    let sql=`UPDATE movies SET mainActor=$1 where id =${id}`;
+    dbClient.query(sql,newMainActor).then(() => {
+      res.status(200).send("Updated");
+    })
+  })
+    
+
+  //localhost:3000/getMovie/id
+  app.get('getMovie/:id',  (req,res) => {
+    let { id } = req.params;
+    let sql= `SELECT FROM movies where id = ${id}`;
+ dbClient.query(sql).then(response => { 
+     res.status(200).send(response.rows)} )
+
+  })
+
+
+
+   // get in async await maybeeee
+  //   app.get('getMovie/:id', async (req,res) => {
+  //   let { id } = req.params;
+  //   let sql= `SELECT FROM movies where id = ${id}`;
+  //   let response= await dbClient.query(sql)
+  //   res.status(200).send(response.rows)
+  // })
+
+ 
+
+  function handleNotFound500(req,res){
+    res.send({
+"status": 500,
+"responseText": "Sorry, something went wrong"
+    })
+}
+
+
+function handleNotFound404(req,res){
+    res.send({
+"code": 404,
+"responseText": "page not found"
+    })
+}
+
   
-
-
-dbClient.connect().then(() => {
-  app.listen(PORT,() => {
-    console.log("Running at 3000")
-  });
-}); 
+  dbClient.connect().then(() => {
+    app.listen(3000,() => {
+      console.log("Running at 3000")
+    });
+  }); 
+  
 
 
 

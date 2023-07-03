@@ -7,11 +7,13 @@
 
 DataBase Name : moviesdb , table name: movies
 you can add a movie from the body and, get all the data in the table using the specific route
+deleting, and updating movies with specific id is availble now, also getting a specific movie
+is availble  
 
 ## WRRC
 Add an image of your WRRC here
 
-![Alt text](wrrc13.png)
+![Alt text](wrrc14.PNG)
 
 ## Overview
 Movies data and tickets for reservation and information about movies.
