@@ -20,7 +20,6 @@ app.use(cors())
 app.use(express.json())
 
 
-
 app.use("/movies",moviesRoutes)
 app.use(generalRoutes)
 app.use(notFoundHandler)
