@@ -3,18 +3,21 @@
 const express=require('express')
 const axios =require('axios');
 const Router=express.Router();
-
+const data = require('./MovieData/data.json')
 
 Router.get('/',(req,res,next) => {
     try {
         let movies=[];
         console.log(data)
+      //  res.send("welcome to Movies Library" )
         res.send(data)
     } catch (e) {
       next('Failed to get Movies' + e)  
     }
   })
   
+  
+
   
   Router.get('/favorite',(req,res,next)=>{
     try {
