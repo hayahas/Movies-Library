@@ -27,10 +27,11 @@ app.use(internalErrorHandler)
 
 
   client.connect().then(() => {
-    app.listen(3000,() => {
+    
+    app.listen(PORT,() => {
       console.log("Running at 3000")
     });
-  }); 
+  }).catch(error => console.log(error)); 
   
 
 
